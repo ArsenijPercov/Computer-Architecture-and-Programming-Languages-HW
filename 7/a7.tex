@@ -1,0 +1,217 @@
+\documentclass[a4paper]{article}
+\usepackage[pdftex]{hyperref}
+\usepackage[latin1]{inputenc}
+\usepackage[english]{babel}
+\usepackage{a4wide}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{ifthen}
+\usepackage{listings}
+\usepackage{minted}
+% move the asterisk at the right position
+\lstset{basicstyle=\ttfamily,tabsize=4,literate={*}{${}^*{}$}1}
+%\lstset{language=C,basicstyle=\ttfamily}
+%\usepackage{moreverb}
+\usepackage{palatino}
+\usepackage{multicol}
+\usepackage{tabularx}
+%\usepackage{comment}
+\usepackage{verbatim}
+\usepackage{color}
+
+%% pdflatex?
+\newif\ifpdf
+\ifx\pdfoutput\undefined
+\pdffalse % we are not running PDFLaTeX
+\else
+\pdfoutput=1 % we are running PDFLaTeX
+\pdftrue
+\fi
+\ifpdf
+\usepackage[pdftex]{graphicx}
+\else
+\usepackage{graphicx}
+\fi
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+\parindent=0cm
+\parskip=0cm
+
+\setlength{\columnseprule}{0.4pt}
+\addtolength{\columnsep}{2pt}
+
+\addtolength{\textheight}{5.5cm}
+\addtolength{\topmargin}{-26mm}
+\pagestyle{empty}
+
+%%
+%% Sheet setup
+%% 
+\newcommand{\coursename}{Computer Architecture and Programming Languages}
+\newcommand{\courseno}{CO20-320241}
+ 
+\newcommand{\sheettitle}{Homework}
+\newcommand{\mytitle}{}
+\newcommand{\mytoday}{\textcolor{blue}{November 3rd}, 2019}
+
+% Current Assignment number
+\newcounter{assignmentno}
+\setcounter{assignmentno}{7}
+
+% Current Problem number, should always start at 1
+\newcounter{problemno}
+\setcounter{problemno}{1}
+
+%%
+%% problem and bonus environment
+%%
+\newcounter{probcalc}
+\newcommand{\problem}[2]{
+  \pagebreak[2]
+  \setcounter{probcalc}{#2}
+  ~\\
+  {\large \textbf{Problem \textcolor{blue}{\arabic{assignmentno}}.\textcolor{blue}{\arabic{problemno}}} \hspace{0.2cm}\textit{#1}} \refstepcounter{problemno}\vspace{2pt}\\}
+
+\newcommand{\bonus}[2]{
+  \pagebreak[2]
+  \setcounter{probcalc}{#2}
+  ~\\
+  {\large \textbf{Bonus Problem \textcolor{blue}{\arabic{assignmentno}}.\textcolor{blue}{\arabic{problemno}}} \hspace{0.2cm}\textit{#1}} \refstepcounter{problemno}\vspace{2pt}\\}
+
+%% some counters  
+\newcommand{\assignment}{\arabic{assignmentno}}
+
+%% solution  
+\newcommand{\solution}{\pagebreak[2]{\bf Solution:}\\}
+
+%% Hyperref Setup
+\hypersetup{pdftitle={Homework \assignment},
+  pdfsubject={\coursename},
+  pdfauthor={},
+  pdfcreator={},
+  pdfkeywords={Computer Architecture and Programming Languages},
+  %  pdfpagemode={FullScreen},
+  %colorlinks=true,
+  %bookmarks=true,
+  %hyperindex=true,
+  bookmarksopen=false,
+  bookmarksnumbered=true,
+  breaklinks=true,
+  %urlcolor=darkblue
+  urlbordercolor={0 0 0.7}
+}
+
+\begin{document}
+\coursename \hfill Course: \courseno\\
+Jacobs University Bremen \hfill \mytoday\\
+\textcolor{blue}{Arsenij Percov}\hfill
+\vspace*{0.3cm}\\
+\begin{center}
+{\Large \sheettitle{} \textcolor{blue}{\assignment}\\}
+\end{center}
+
+
+\problem{}{0}
+\solution
+\textcolor{blue}{}
+\begin{lstlisting}
+my_function:
+	addi $t0, $0, 10 \\add 10 to temp register
+	slt $t1, $t0, $a0 \\ compare, if $a0 (x) is bigger than 10, then set $t1 to 1
+	beq $t1, $0, ELSE \\ if 1 continue, else jump to else
+	sub $vo, $a0, $a1\\subtract y from x, and save it to return register
+	j AFTER\\jump to after
+ELSE:
+	add $vo, $a1, $a0\\add x and y and save them in case of else
+AFTER:
+	jr $ra\\return to caller
+\end{lstlisting}
+\problem{}{0}
+\solution
+\textcolor{blue}{}
+\begin{lstlisting}
+prod:
+	mult $a0, $a1 \\multiply argument 0 and 1 (x and y)
+	mflo $v0 \\assuming that the result can be fit in 32 bits save to return register
+	jr $ra \\ return to caller
+	
+is_more_than_fifty:
+	addi $sp, $sp, -12 \\push 3 elements in stack: $ra, $a0, $a1 (they will be passed, so we want to save them, since they will be used by the callee, and for these registers caller is responsible for that)
+	sw $ra, 8($sp)\\save $ra to the stack
+	sw $a0, 4($sp)\\save $a0 to the stack
+	sw $a1, 0($sp)\\save $a1 to the stack
+	jal prod \\ call the function prod, we will pass $a0, $a1 as this call recieved them, that is what we expect from the code)
+	lw $a1, 0($sp) \\restore $a1
+	lw $a0, 4($sp) \\restore $a0
+	lw $ra, 8($sp) \\restore $ra
+	addi $sp, $sp, 12 \\pop 3 elements from the stack
+	addi $t0, $0, 50 \\ save 50 to $t0
+	slt $t1, $t0, $v0 \\ if 50 is less than return from prod, then $t1 is 1
+	beq $t1, $0, ELSE \\jump to else, if $t1 is equal to 0
+	addi $v0, $0, 1 \\ save 1 to return register
+	jr $ra \\ return to the caller
+ELSE:
+	move $v0, $0 \\ save 0 to return register
+	jr $ra\\return to caller
+\end{lstlisting}
+
+\problem{}{0}
+\solution
+\textcolor{blue}{}
+\begin{lstlisting}
+int i = 0;
+while (A[i] != -1){
+	i++;
+}
+\end{lstlisting}
+\problem{}{0}
+\solution
+\textcolor{blue}{}
+\begin{center}
+    \begin{tabular}{|c|c|c|c}
+        \hline
+        PC&Machine Code&Binary Machine Code& \\ \hline
+        60000&0 0 19 9 2 0&000000 00000 10011 01001 00010 000000&60000 is the first location of the branch\\ \hline
+        60004&0 9 22 9 0 32& 000000 01001 10110 01001 00000 100000&add call \\  \hline
+        60008&35 9 8 0&100011 01001 01000 0000000000000000&  \\ \hline
+        60012&4 8 21 2&000100 01000 10101 0000000000000010&  \\ \hline
+        60016&8 19 19 1&001000 10011 10011 0000000000000001&  \\ \hline
+        60020&2 15000&000010 00000000000011101010011000&destination = PC[0 : 3] + word address \\ \hline
+        60024&&Exit  \\ \hline
+    \end{tabular}
+\end{center}
+
+\problem{}{0}
+\solution
+
+    a) $0C000000_{16}=0000 1100 0000 0000 0000 0000 0000 0000_{2}$ \\
+   $201326592=2^{26}+2^{27}$. \\
+    $C4630000_{16}=1100 0100 0110 0011 0000 0000 0000 0000_{2}$. The number is negative, invert all bits and then add one:\\ \\
+    $1100 0100 0110 0011 0000 0000 0000 0000_{2} =>0011 1011 1001 1100 1111 1111 1111 1111$\\
+    add one:\\
+    $0011 1011 1001 1100 1111 1111 1111 1111 + 1 = 0011 1011 1001 1101 0000 0000 0000 0000$\\ \\
+    $0011 1011 1001 1101 0000 0000 0000 0000_2=1000144896_{10}$\\
+    Set the right sign:\\
+    $1100 0100 0110 0011 0000 0000 0000 0000_{2}=-1000144896_{10}$\\\\
+    b) 
+    $0C000000_{16}=0000 1100 0000 0000 0000 0000 0000 0000_{2}$ \\
+    $201326592=2^{26}+2^{27}$. \\
+
+    $C4630000_{16}=11000100011000110000000000000000_{2}$\\
+    $2^{16}+2^{17}+2^{21}+2^{22}+2^{26}+2^{30}+2^{31}=3294822400_{10}$\\ \\
+    c)000011 = jal 
+    jal " " (at address 0)\\
+    Second number:\\
+    110001 00011 00011 0000000000000000\\ \\
+LWC1	\$v1	\$v1	offset\\
+110001	00011	00011	0000000000000000 =\\
+    LWC1 \$v1 0 \$v1 
+
+
+\end{document} 

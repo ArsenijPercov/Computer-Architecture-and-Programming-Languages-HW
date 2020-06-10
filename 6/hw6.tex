@@ -1,0 +1,187 @@
+\documentclass[a4paper]{article}
+\usepackage[pdftex]{hyperref}
+\usepackage[latin1]{inputenc}
+\usepackage[english]{babel}
+\usepackage{a4wide}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{ifthen}
+\usepackage{enumitem}
+\usepackage{listings}
+% move the asterisk at the right position
+\lstset{basicstyle=\ttfamily,tabsize=4,literate={*}{${}^*{}$}1}
+%\lstset{language=C,basicstyle=\ttfamily}
+\usepackage{moreverb}
+\usepackage{palatino}
+\usepackage{multicol}
+\usepackage{tabularx}
+\usepackage{comment}
+\usepackage{verbatim}
+\usepackage{color}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes.gates.logic.US,shapes.gates.logic.IEC,calc}
+%% pdflatex?
+\newif\ifpdf
+\ifx\pdfoutput\undefined
+\pdffalse % we are not running PDFLaTeX
+\else
+\pdfoutput=1 % we are running PDFLaTeX
+\pdftrue
+\fi
+
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+\parindent=0cm
+\parskip=0cm
+
+\setlength{\columnseprule}{0.4pt}
+\addtolength{\columnsep}{2pt}
+
+\addtolength{\textheight}{5.5cm}
+\addtolength{\topmargin}{-26mm}
+\pagestyle{empty}
+
+%%
+%% Sheet setup
+%% 
+\newcommand{\coursename}{Computer Architecture and Programming Languages}
+\newcommand{\courseno}{CO20-320241}
+ 
+\newcommand{\sheettitle}{Homework}
+\newcommand{\mytitle}{}
+\newcommand{\mytoday}{\textcolor{blue}{October 21th}, 2019}
+
+% Current Assignment number
+\newcounter{assignmentno}
+\setcounter{assignmentno}{6}
+
+% Current Problem number, should always start at 1
+\newcounter{problemno}
+\setcounter{problemno}{1}
+
+%%
+%% problem and bonus environment
+%%
+\newcounter{probcalc}
+\newcommand{\problem}[2]{
+  \pagebreak[2]
+  \setcounter{probcalc}{#2}
+  ~\\
+  {\large \textbf{Problem \textcolor{blue}{\arabic{assignmentno}}.\textcolor{blue}{\arabic{problemno}}} \hspace{0.2cm}\textit{#1}} \refstepcounter{problemno}\vspace{2pt}\\}
+
+\newcommand{\bonus}[2]{
+  \pagebreak[2]
+  \setcounter{probcalc}{#2}
+  ~\\
+  {\large \textbf{Bonus Problem \textcolor{blue}{\arabic{assignmentno}}.\textcolor{blue}{\arabic{problemno}}} \hspace{0.2cm}\textit{#1}} \refstepcounter{problemno}\vspace{2pt}\\}
+
+%% some counters  
+\newcommand{\assignment}{\arabic{assignmentno}}
+
+%% solution  
+\newcommand{\solution}{\pagebreak[2]{\bf Solution:}\\}
+
+%% Hyperref Setup
+\hypersetup{pdftitle={Homework \assignment},
+  pdfsubject={\coursename},
+  pdfauthor={},
+  pdfcreator={},
+  pdfkeywords={Computer Architecture and Programming Languages},
+  %  pdfpagemode={FullScreen},
+  %colorlinks=true,
+  %bookmarks=true,
+  %hyperindex=true,
+  bookmarksopen=false,
+  bookmarksnumbered=true,
+  breaklinks=true,
+  %urlcolor=darkblue
+  urlbordercolor={0 0 0.7}
+}
+
+\begin{document}
+\coursename \hfill Course: \courseno\\
+Jacobs University Bremen \hfill \mytoday\\
+\textcolor{blue}{Arsenij Percov}\hfill
+\vspace*{0.3cm}\\
+\begin{center}
+{\Large \sheettitle{} \textcolor{blue}{\assignment}\\}
+\end{center}
+\problem{}{0}
+\solution
+\textcolor{blue}{}
+Biggest reason for that is the fact that we have 32 registers on most architectures. In order to represent all 32 possible options we need exactly 5 bits, since 11111 represents 31, and 00000 represents 0.\\\\
+
+\problem{}{0}
+\solution
+\textcolor{blue}{}
+a) op = 0, rs = 8, rt = 9, rd = 10, shamt = 0, funct = 34 \\
+sub \$t2 \$t0 \$t1\\\\
+b) op = 0x23, rs = 17, rt = 18, const = 0x4\\
+op = $35_10$\\
+lw \$s2 4(\$s1)\\\\
+
+\problem{}{0}
+\solution
+\textcolor{blue}{}
+a) op = 0, rs = 8, rt = 9, rd = 10, shamt = 0, funct = 34 \\
+\begin{tabular}{|c|c|c|c|c|c|}
+            \hline
+                op&rs&rt&rd&shamt&funct  \\ \hline
+                000000&01000&01001&01010&00000&100010 \\ \hline 
+            \end{tabular}\\\\
+b) op = 0x23, rs = 17, rt = 18, const = 0x4\\
+\begin{tabular}{|c|c|c|c|}
+            \hline
+                op&rs&rt&const  \\ \hline
+                100011&10001&10010&0000000000000100 \\ \hline 
+            \end{tabular}\
+
+\problem{}{0}
+\solution
+\textcolor{blue}{}
+\$t0 = 0010 0100 1001 0010 0100 1001 0010 0100\\
+\$t1 = 0011 1111 1111 1000 0000 0000 0000 0000\\
+After comparing bits from most significant bit to least one, we can notice that 4 most significant bit is bigger at \$t1, so \$t1 is bigger.\\
+Therefore, slt will set value of \$t2 as 1.\\
+Next instruction is beq, and since 1 and 0 are not equal, we go to next instruction, which is to jump to done, ans our final value is 1.
+\\\\
+
+\problem{}{0}
+\solution
+\textcolor{blue}{}
+addi \$t0, \$0, 6 \\
+sll \$t0, \$t0, 2\\
+add \$t0, \$t0, \$s0  - get adress of A[6]\\
+lw \$t1, 0(\$t0)  - load value of A[6]\\
+add \$s1, \$s1, \$t1\\
+sw, \$s1, 0(\$t0)\\\\
+
+\problem{}{0}
+\solution
+\textcolor{blue}{}
+Add 16 most significant bits:\\
+0000 0000 0010 0011 = $35_10$\\
+lui \$s4, 35\\
+Load 16 least significant bits\\
+ori \$s4, \$s4, 35\\\\
+
+\problem{}{0}
+\solution
+\textcolor{blue}{}
+\begin{align*}
+&\text{addi \$t0, \$0, 0 }\\
+&\text{addi \$t1, \$0, 8 }\\
+\text{LOOP:}&\text{beq \$t0, \$t1, EXIT} \\
+&\text{addi \$s0, \$s0, 4}\\
+&\text{addi \$t0, \$t0, 1}\\
+&\text{j LOOP}\\
+\text{EXIT: }&\\
+\end{align*}
+
+\end{document} 

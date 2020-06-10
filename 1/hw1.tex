@@ -1,0 +1,329 @@
+\documentclass[a4paper]{article}
+\usepackage[pdftex]{hyperref}
+\usepackage[latin1]{inputenc}
+\usepackage[english]{babel}
+\usepackage{a4wide}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algorithmicx} \usepackage{algorithm}
+\usepackage{ifthen}
+\usepackage{listings}
+% move the asterisk at the right position
+\lstset{basicstyle=\ttfamily,tabsize=4,literate={*}{${}^*{}$}1}
+%\lstset{language=C,basicstyle=\ttfamily}
+\usepackage{moreverb}
+\usepackage{palatino}
+\usepackage{multicol}
+\usepackage{tabularx}
+\usepackage{comment}
+\usepackage{verbatim}
+\usepackage{color}
+
+%% pdflatex?
+\newif\ifpdf
+\ifx\pdfoutput\undefined
+\pdffalse % we are not running PDFLaTeX
+\else
+\pdfoutput=1 % we are running PDFLaTeX
+\pdftrue
+\fi
+\ifpdf
+\usepackage[pdftex]{graphicx}
+\else
+\usepackage{graphicx}
+\fi
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+\parindent=0cm
+\parskip=0cm
+
+\setlength{\columnseprule}{0.4pt}
+\addtolength{\columnsep}{2pt}
+
+\addtolength{\textheight}{5.5cm}
+\addtolength{\topmargin}{-26mm}
+\pagestyle{empty}
+
+%%
+%% Sheet setup
+%% 
+\newcommand{\coursename}{Computer Architecture and Programming Languages}
+\newcommand{\courseno}{CO20-320241}
+ 
+\newcommand{\sheettitle}{Homework}
+\newcommand{\mytitle}{}
+\newcommand{\mytoday}{\textcolor{blue}{September 13}, 2019}
+
+% Current Assignment number
+\newcounter{assignmentno}
+\setcounter{assignmentno}{1}
+
+% Current Problem number, should always start at 1
+\newcounter{problemno}
+\setcounter{problemno}{1}
+
+%%
+%% problem and bonus environment
+%%
+\newcounter{probcalc}
+\newcommand{\problem}[2]{
+  \pagebreak[2]
+  \setcounter{probcalc}{#2}
+  ~\\
+  {\large \textbf{Problem \textcolor{blue}{\arabic{assignmentno}}.\textcolor{blue}{\arabic{problemno}}} \hspace{0.2cm}\textit{#1}} \refstepcounter{problemno}\vspace{2pt}\\}
+
+\newcommand{\bonus}[2]{
+  \pagebreak[2]
+  \setcounter{probcalc}{#2}
+  ~\\
+  {\large \textbf{Bonus Problem \textcolor{blue}{\arabic{assignmentno}}.\textcolor{blue}{\arabic{problemno}}} \hspace{0.2cm}\textit{#1}} \refstepcounter{problemno}\vspace{2pt}\\}
+
+%% some counters  
+\newcommand{\assignment}{\arabic{assignmentno}}
+
+%% solution  
+\newcommand{\solution}{\pagebreak[2]{\bf Solution:}\\}
+
+%% Hyperref Setup
+\hypersetup{pdftitle={Homework \assignment},
+  pdfsubject={\coursename},
+  pdfauthor={},
+  pdfcreator={},
+  pdfkeywords={Computer Architecture and Programming Languages},
+  %  pdfpagemode={FullScreen},
+  %colorlinks=true,
+  %bookmarks=true,
+  %hyperindex=true,
+  bookmarksopen=false,
+  bookmarksnumbered=true,
+  breaklinks=true,
+  %urlcolor=darkblue
+  urlbordercolor={0 0 0.7}
+}
+
+\begin{document}
+\coursename \hfill Course: \courseno\\
+Jacobs University Bremen \hfill \mytoday\\
+\textcolor{blue}{Arsenij Percov}\hfill
+\vspace*{0.3cm}\\
+\begin{center}
+{\Large \sheettitle{} \textcolor{blue}{\assignment}\\}
+\end{center}
+
+\problem{}{0}
+\solution
+a) $10100$ (base 2) $= 1*2^4+0*2^3+1*2^2+0*2^1+0*2^0 = 16 + 4 = 20$ base (10)\\\\
+b) $11011011$ (base 2) $= 1*2^7+1*2^6+0*2^5+1*2^4+1*2^3+0*2^2+1*2^1+0*2^0 = 128+64+16+8+2+1 = 219$ (base 10)\\\\
+c) $001001001$ (base 2) $= 1*2^6+0*2^5+0*2^4+1*2^3+0*2^2+0*2^1+1*2^0 = 64 + 8 + 1 = 73$ (base 10)\\\\
+d)  $111111111111$ (base 2) $= 1*2^11+1*2^10+1*2^9+1*2^8+1*2^7+1*2^6+1*2^5+1*2^4+1*2^3+1*2^2+1*2^1+1*2^0 = 2048+1024+512+256+128+64+32+16+8+4+2+1 = 4095$ (base 10) \\\\
+e) $75077$ (base 8) $= 7*8^4+5*8^3+0*8^2+7*8^1+7*8^0=28672+2560+56+7=31295$ (base 10)\\\\
+f) $12101$ (base 3) $=1*3^4+2*3^3+1*3^2+0*3^1+1*3^0=81+54+9+1=145$ (base 10)\\\\
+g) $26601$ (base 7) $=2*7^4+6*7^3+6*7^2+0*7^1+1*7^0=4802+2058+294+1=7155$ (base 10)\\\\
+h) $431021$ (base 5) $=4*5^5+3*5^4+1*5^3+0*5^2+2*5^1+1*5^0=12500+1875+125+10+1=14511$ (base 10)
+
+
+  
+ 
+\problem{}{0}
+\solution
+a) $4272$ (base 10) To convert we should be dividing it by 2 until it is equal to 0, while taking note of reminders.\\
+$4272/2=2136$ (0)\\
+$2136/2=1068$ (0)\\
+$1068/2=534$ (0)\\
+$534/2=267$ (0)\\
+$267/2=133$ (1) \\
+$133/2=66$ (1)\\
+$66/2=33$ (0)\\
+$33/2=16$ (1)\\
+$16/2=8$ (0)\\
+$8/2=4$ (0)\\
+$4/2=2$ (0)\\
+$2/2=1$ (0)\\
+$1/2=0$ (1)\\
+Taking the sequence of reminders from bottom to up gives us $1000010110000$ (base 2)\\\\
+b) $CBA$ (base 16) To convert it, we should be converting decimal representations of digits to their binary equivalent reserving 4 bits for every digit. \\
+$CBA = 12 11 10 = 1100 1011 1010 = 110010111010$ (base 2)\\\\
+c) $B8C$ (base 16)$= B*16^2+8*16^1+C*16^0=11*16^2+8*16^1+12*16^0=2816+128+12=2956$ (base 10)\\\\
+d) $29D8$ (base 16)$=2*16^3+9*16^2+D*16^1+8*16^0=2*16^3+9*16^2+13*16^1+8*16^0=8192+2304+208+8=10712$ (base 10)\\\\
+e) $8CE$ (base 16) The next 5 numbers, to find them let's increment $8CE$ 5 times. \\
+$8CE+1=8CF$\\
+$8CF+1=8D0$\\
+$8D0+1=8D1$\\
+$8D1+1=8D2$ \\
+$8D2+1=8D3$\\\\
+
+\problem{}{0}
+\solution
+a) $732$ (base 10) We need to convert every digit individually reserving 4 bits for each of them.\\
+$ 7=0111$\\
+$ 3=0011$\\
+$ 2=0010$\\
+$732 = 011100110010$ (BCD)\\\\ 
+b) Due to the fact that we are allowed to use only decimal numbers for direct conversion to BCD, that restricts us to convert only digits, so only 0-9 will be used. However, using 4 bits we can represent numbers in the range 0-15. Therefore, everything 10-15 is invalid BCD code:\\
+$10=1010$\\
+$11=1011$\\
+$12=1100$\\
+$13=1101$\\
+$14=1110$\\
+$15=1111$\\\\
+c) $1001 0101 0110$ (BCD)\\
+$1001 = 9$\\
+$0101 = 5$\\
+$0110 = 6$\\
+$1001 0101 0110 = 956$ (base 10)\\\\
+d) To answer this question we just need to convert 77 which is decimal to binary and hexadecimal.\\
+To binary:\\
+$77/2=38$ (1)\\
+$38/2=19$ (0)\\
+$19/2=9$ (1)\\
+$9/2=4$ (1)\\
+$4/2=2$ (0)\\
+$2/2=1$ (0)\\
+$1/2=0$ (1)\\
+Therefore, the number is 1001101 (base 2).\\
+To hex:\\
+$77/16=4$ (13)\\
+$4/16=0$ (4)\\
+$77 = 4 13 $ (base 16) $= 4D$ (base 16)\\\\
+e) Convert 109:\\
+$109/2=54$ (1)\\
+$54/2=27$ (0)\\
+$27/2=13$ (1)\\
+$13/2=6$ (1)\\
+$6/2=3$ (0)\\
+$3/2=1$ (1)\\
+$1/2=0$ (1)\\
+The number is 1101101 (base 2).\\\\
+To hex:\\
+$109/16=6$ (13)\\
+$6/16=0$ (6)\\
+$109 = 6 13 = 6D$ (base 16)
+ 
+
+\problem{}{0}
+\solution 
+ OR:\\
+
+\begin{tabular}{||c c|c||} 
+ \hline
+ A & B & A OR B \\ [0.5ex] 
+ \hline\hline
+ 0 & 0 & 0\\ 
+ \hline
+  0 & 1 & 1\\ 
+ \hline
+  1 & 0 & 1\\ 
+ \hline
+  1 & 1 & 1\\ 
+ \hline
+\end{tabular}
+\\\\
+AND:\\
+
+\begin{tabular}{||c c|c||} 
+ \hline
+ A & B & A AND B \\ [0.5ex] 
+ \hline\hline
+ 0 & 0 & 0\\ 
+ \hline
+  0 & 1 & 0\\ 
+ \hline
+  1 & 0 & 0\\ 
+ \hline
+  1 & 1 & 1\\ 
+ \hline
+\end{tabular}
+\\\\
+NOT:\\
+
+\begin{tabular}{||c|c||} 
+ \hline
+ A & NOT B \\ [0.5ex] 
+ \hline\hline
+ 0 & 1\\ 
+ \hline
+  1 & 0\\ 
+ \hline
+\end{tabular}
+\\\\
+a) OR has high output for one low output in case when at least one of the inputs is high. Doesn't satisfy the condition.\\\\
+NOT has high output in case of low input. Also doesn't satisfy.\\\\
+
+\textbf{AND} requires all high input to give high output. That satisfes the equation, so that is the answer.\\\\
+b) \textbf{OR} has low output only when all inputs are zeros. Satisfies the condition. This is the answer.\\\\
+NOT has high output in case of low input. Doesn't satisfy.\\\\
+
+AND requires all high input to give high output.Meaning that some inputs may be high, and output would be still low. Doesn't satisfy the condition.\\\\
+
+\problem{}{0}
+\solution 
+\begin{center}
+\begin{tabular}{||c|c|c|c||} 
+ \hline
+ A & B & C & A AND B AND C\\ [0.5ex] 
+ \hline\hline
+ 0 & 0 & 0 & 0\\ 
+ \hline
+  1 & 0 & 0 & 0 \\ 
+ \hline
+  0 & 1 & 0 & 0 \\ 
+ \hline
+  0 & 0 & 1 & 0 \\ 
+ \hline
+  1 & 1 & 0 & 0 \\ 
+ \hline
+ 1 & 0 & 1 & 0 \\ 
+ \hline
+ 0 & 1 & 1 & 0 \\ 
+ \hline
+ 1 & 1 & 1 & 1 \\ 
+ \hline
+\end{tabular}
+\end{center}
+
+\problem{}{0}
+\solution 
+\begin{center}
+\begin{tabular}{||c|c|c|c|c||} 
+ \hline
+ A & B & C & D& A OR B OR C OR D\\ [0.5ex] 
+ \hline\hline
+ 0 & 0 & 0 & 0 & 0\\ 
+ \hline
+  1 & 0 & 0 & 0 & 1\\ 
+ \hline
+  0 & 1 & 0 & 0 & 1\\ 
+ \hline
+  0 & 0 & 1 & 0 & 1 \\ 
+ \hline
+  0 & 0 & 0 & 1 & 1\\ 
+ \hline
+ 1 & 1 & 0 & 0 & 1 \\ 
+ \hline
+ 1 & 0 & 1 & 0 & 1\\ 
+ \hline
+ 1 & 0 & 0 & 1 & 1\\ 
+ \hline
+ 0 & 1 & 1 & 0 & 1\\ 
+ \hline
+ 0 & 1 & 0 & 1 & 1\\ 
+ \hline
+ 0 & 0 & 1 & 1 & 1\\ 
+ \hline
+ 1 & 1 & 1 & 0 & 1\\ 
+ \hline
+ 1 & 1 & 0 & 1 & 1\\ 
+ \hline
+ 1 & 0 & 1 & 1 & 1\\
+ \hline
+ 0 & 1 & 1 & 1 & 1\\ 
+ \hline
+ 1 & 1 & 1 & 1 & 1\\ 
+ \hline
+\end{tabular}
+\end{center}
+\end{document}
